@@ -1,0 +1,632 @@
+{
+	"info": {
+		"_postman_id": "ee0949ef-c96a-4539-84ce-b71f22a67783",
+		"name": "Webmotors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Make",
+			"item": [
+				{
+					"name": "Deve poder consultar as marcas.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));\r",
+									"\r",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));\r",
+									"\r",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));\r",
+									"\r",
+									"pm.test(\"Body is correct\", () => pm.response.to.have.body('[{\"ID\":1,\"Name\":\"Chevrolet\"},{\"ID\":2,\"Name\":\"Honda\"},{\"ID\":3,\"Name\":\"Ford\"}]'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Webmotors}}/api/OnlineChallenge/Make",
+							"host": [
+								"{{Webmotors}}"
+							],
+							"path": [
+								"api",
+								"OnlineChallenge",
+								"Make"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Model",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Deve poder consultar os modelos através do código da marca.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Veja as pastas: \"Model (Pre-request Script)\" e \"200 (Tests)\".\r",
+											"\r",
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('[{\"MakeID\":1,\"ID\":1,\"Name\":\"Agile\"},{\"MakeID\":1,\"ID\":2,\"Name\":\"Astra\"},{\"MakeID\":1,\"ID\":3,\"Name\":\"Onix\"}]'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Model?MakeID={{MakeID}}",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Model"
+									],
+									"query": [
+										{
+											"key": "MakeID",
+											"value": "{{MakeID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Não deve retornar modelos quando código da marca inexistente.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Veja as pastas: \"Model (Pre-request Script)\" e \"200 (Tests)\".\r",
+											"\r",
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('[]'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Model?MakeID={{MakeID}}99",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Model"
+									],
+									"query": [
+										{
+											"key": "MakeID",
+											"value": "{{MakeID}}99"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "500",
+					"item": [
+						{
+							"name": "Não deve poder consultar modelos com código da marca inválida.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('{\"Message\":\"The request is invalid.\",\"MessageDetail\":\"The parameters dictionary contains a null entry for parameter \\'MakeID\\' of non-nullable type \\'System.Int32\\' for method \\'System.Collections.Generic.List`1[Swagger.Models.Model] Model(Int32)\\' in \\'Swagger.Controllers.OnlineChallengeController\\'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.\"}'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Model?MakeID=A",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Model"
+									],
+									"query": [
+										{
+											"key": "MakeID",
+											"value": "A"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+									"pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));"
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest(`${pm.environment.get(\"Webmotors\")}/api/OnlineChallenge/Make`, (err, res) => pm.variables.set(\"MakeID\", res.json()[0].ID));"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Version",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Deve poder consultar as versões através do código do modelo.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Veja as pastas: \"Version (Pre-request Script)\" e \"200 (Tests)\".\r",
+											"\r",
+											"pm.test(\"Body matches string\", () => pm.expect(pm.response.text()).to.include('{\"ModelID\":1,\"ID\":6,\"Name\":\"1.5 DX 16V FLEX 4P AUTOMÁTICO\"}'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Version?ModelID={{ModelID}}",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Version"
+									],
+									"query": [
+										{
+											"key": "ModelID",
+											"value": "{{ModelID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Não deve retornar versões quando código do modelo inexistente.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Veja as pastas: \"Model (Pre-request Script)\" e \"200 (Tests)\".\r",
+											"\r",
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('[]'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Version?ModelID={{ModelID}}99",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Version"
+									],
+									"query": [
+										{
+											"key": "ModelID",
+											"value": "{{ModelID}}99"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "500",
+					"item": [
+						{
+							"name": "Não deve poder consultar modelos com código de fabricante inválido.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('{\"Message\":\"The request is invalid.\",\"MessageDetail\":\"The parameters dictionary contains a null entry for parameter \\'ModelID\\' of non-nullable type \\'System.Int32\\' for method \\'System.Collections.Generic.List`1[Swagger.Models.Version] Version(Int32)\\' in \\'Swagger.Controllers.OnlineChallengeController\\'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.\"}'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Version?ModelID=A",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Version"
+									],
+									"query": [
+										{
+											"key": "ModelID",
+											"value": "A"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+									"pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));"
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest(`${pm.environment.get(\"Webmotors\")}/api/OnlineChallenge/Model?MakeID=1`, (err, res) => pm.variables.set(\"ModelID\", res.json()[0].ID));"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Vehicles",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Deve poder consultar os veiculos da primeira pagina.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Body matches string\", () => pm.expect(pm.response.text()).to.include('{\"ID\":1,\"Make\":\"Honda\",\"Model\":\"City\",\"Version\":\"2.0 EXL 4X4 16V GASOLINA 4P AUTOMÁTICO\",\"Image\":\"http://desafioonline.webmotors.com.br/content/img/01.jpg\",\"KM\":0,\"Price\":\"59000,00\",\"YearModel\":2018,\"YearFab\":2017,\"Color\":\"Azul\"}'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Vehicles?Page=1",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Vehicles"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Não deve retornar veículos quando página inexistente.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Veja as pastas: \"Model (Pre-request Script)\" e \"200 (Tests)\".\r",
+											"\r",
+											"pm.test(\"Body is correct\", () => pm.response.to.have.body('[]'));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Webmotors}}/api/OnlineChallenge/Vehicles?Page=199",
+									"host": [
+										"{{Webmotors}}"
+									],
+									"path": [
+										"api",
+										"OnlineChallenge",
+										"Vehicles"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "199"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));",
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Content-Type is present\", () => pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\"));",
+									"pm.test(\"Expires is present\", () => pm.response.to.be.header(\"Expires\", \"-1\"));",
+									"pm.test(\"Pragma is present\", () => pm.response.to.be.header(\"Pragma\", \"no-cache\"));"
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
